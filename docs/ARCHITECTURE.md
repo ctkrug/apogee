@@ -7,7 +7,8 @@ as-is. `npm run dev` just puts a static file server in front of the repo root.
 
 ```
 src/
-  physics.js    pure two-body gravity: acceleration, stepSimulation (symplectic Euler),
+  physics.js    pure two-body gravity: acceleration (r2 clamped away from zero so the
+                x=y=0 singularity can't NaN the sim), stepSimulation (symplectic Euler),
                 circularOrbitVelocity, escapeVelocity, specificOrbitalEnergy,
                 orbitalElements (apoapsis/periapsis/period for a bound orbit),
                 classifyOutcome (crash | orbit | escape | flying)
@@ -64,16 +65,24 @@ particles → drag indicator → satellite → HUD text update. The canvas backi
 
 ## Verified behavior
 
-Beyond the Vitest suite (`npm test` — physics/input/hud/particles/stats/audio, all DOM-free),
-the built page has been driven end-to-end in headless Chromium (mouse **and** touch
-drag-to-launch, all three outcomes, HUD live updates, mute-state + orbit-count persistence
-across reload, `prefers-reduced-motion` suppressing shake/particles while outcomes still
-resolve, gravity slider disabled mid-flight, keyboard focus states, and 390/768/1440 layouts).
+Beyond the Vitest suite (`npm test` — physics/input/hud/particles/stats/audio/storage, all
+DOM-free, 100% line / ~95% branch coverage on those modules per `npm run test:coverage`), the
+built page has been driven end-to-end in headless Chromium, Firefox, and WebKit (mouse **and**
+touch drag-to-launch, all three outcomes, HUD live updates, mute-state + orbit-count persistence
+across reload — including hand-corrupted/malformed localStorage values, which fall back cleanly
+— `prefers-reduced-motion` suppressing shake/particles while outcomes still resolve, gravity
+slider disabled mid-flight, resize mid-drag, rapid double-click/reset hammering, keyboard-only
+operation of every control with visible focus, and 390/768/1440 layouts). A 12-round replay
+under Chromium showed a flat DOM node count and no monotonic heap growth (no listener/interval
+leak). Core-logic mutation testing (flipping `<=`/`>=`/`>` boundaries in physics/particles) is
+caught by the suite except one confirmed-equivalent mutant in `input.js` where the two branches
+produce byte-identical output at that exact boundary.
 
 ## Running / testing
 
 ```bash
 npm install
-npm test        # vitest run — full unit suite
-npm run dev      # static file server (http-server) for manual verification
+npm test                # vitest run — full unit suite
+npm run test:coverage   # same, with a v8 coverage report (see vitest.config.js for thresholds)
+npm run dev             # static file server (http-server) for manual verification
 ```
