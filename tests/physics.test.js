@@ -29,6 +29,23 @@ describe("acceleration", () => {
     expect(Number.isFinite(a.ax)).toBe(true);
     expect(Number.isFinite(a.ay)).toBe(true);
   });
+
+  it("is always finite and pulls back toward the planet, for any position", () => {
+    fc.assert(
+      fc.property(
+        fc.float({ min: -1e4, max: 1e4, noNaN: true }),
+        fc.float({ min: -1e4, max: 1e4, noNaN: true }),
+        (x, y) => {
+          const a = acceleration(x, y);
+          expect(Number.isFinite(a.ax)).toBe(true);
+          expect(Number.isFinite(a.ay)).toBe(true);
+          // Attractive force: (ax, ay) points opposite (x, y), so their dot
+          // product is never positive (zero only at the x=y=0 singularity).
+          expect(a.ax * x + a.ay * y).toBeLessThanOrEqual(0);
+        }
+      )
+    );
+  });
 });
 
 describe("circularOrbitVelocity", () => {
