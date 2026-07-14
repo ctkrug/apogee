@@ -81,4 +81,22 @@ describe("getBoolean / setBoolean", () => {
     const storage = fakeStorage();
     expect(getBoolean("muted", true, storage)).toBe(true);
   });
+
+  it("falls back when storage throws on read", () => {
+    const storage = {
+      getItem() {
+        throw new Error("blocked");
+      },
+    };
+    expect(getBoolean("muted", true, storage)).toBe(true);
+  });
+
+  it("does not throw when storage.setItem throws on write", () => {
+    const storage = {
+      setItem() {
+        throw new Error("quota exceeded");
+      },
+    };
+    expect(() => setBoolean("muted", true, storage)).not.toThrow();
+  });
 });
