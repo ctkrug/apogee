@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import fc from "fast-check";
 import { buildHudReadout } from "../src/hud.js";
 import { circularOrbitVelocity, DEFAULT_GM } from "../src/physics.js";
 
@@ -47,5 +48,22 @@ describe("buildHudReadout", () => {
   it("handles a missing state gracefully (no state before first render)", () => {
     const readout = buildHudReadout(null, DEFAULT_GM, PLANET_RADIUS);
     expect(readout.velocity).toBe("—");
+  });
+
+  it("never renders NaN/undefined/Infinity for any finite state", () => {
+    fc.assert(
+      fc.property(
+        fc.double({ min: -1e4, max: 1e4, noNaN: true }),
+        fc.double({ min: -1e4, max: 1e4, noNaN: true }),
+        fc.double({ min: -1e3, max: 1e3, noNaN: true }),
+        fc.double({ min: -1e3, max: 1e3, noNaN: true }),
+        (x, y, vx, vy) => {
+          const readout = buildHudReadout({ x, y, vx, vy }, DEFAULT_GM, PLANET_RADIUS);
+          for (const value of Object.values(readout)) {
+            expect(value).not.toMatch(/NaN|undefined|Infinity/);
+          }
+        }
+      )
+    );
   });
 });
