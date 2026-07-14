@@ -28,6 +28,16 @@ describe("getOrbitCount", () => {
   it("floors a non-integer stored value", () => {
     expect(getOrbitCount(fakeStorage({ "escape-velocity:orbit-count": "4.7" }))).toBe(4);
   });
+
+  it("always returns a non-negative integer for any raw stored string", () => {
+    fc.assert(
+      fc.property(fc.string(), (raw) => {
+        const count = getOrbitCount(fakeStorage({ "escape-velocity:orbit-count": raw }));
+        expect(Number.isInteger(count)).toBe(true);
+        expect(count).toBeGreaterThanOrEqual(0);
+      })
+    );
+  });
 });
 
 describe("incrementOrbitCount", () => {
