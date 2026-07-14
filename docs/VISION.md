@@ -1,4 +1,4 @@
-# Vision — Escape Velocity
+# Vision — Apogee
 
 ## The problem
 

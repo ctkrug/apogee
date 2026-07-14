@@ -1,4 +1,4 @@
-# Backlog — Escape Velocity
+# Backlog — Apogee
 
 Stories are marked `[ ]` until done. Every story has concrete, verifiable acceptance criteria —
 build implements to them, QA attacks them.

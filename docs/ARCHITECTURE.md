@@ -1,4 +1,4 @@
-# Architecture — Escape Velocity
+# Architecture — Apogee
 
 Static site, no build step: `index.html` + `styles/main.css` + `src/*.js` (ES modules) served
 as-is. `npm run dev` just puts a static file server in front of the repo root.
