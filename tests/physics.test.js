@@ -77,6 +77,25 @@ describe("stepSimulation", () => {
     expect(Number.isFinite(state.vx)).toBe(true);
     expect(Number.isFinite(state.vy)).toBe(true);
   });
+
+  it("always produces a finite next state for any finite input state", () => {
+    fc.assert(
+      fc.property(
+        fc.double({ min: -1e4, max: 1e4, noNaN: true }),
+        fc.double({ min: -1e4, max: 1e4, noNaN: true }),
+        fc.double({ min: -1e3, max: 1e3, noNaN: true }),
+        fc.double({ min: -1e3, max: 1e3, noNaN: true }),
+        fc.double({ min: 0, max: 1, noNaN: true }),
+        (x, y, vx, vy, dt) => {
+          const next = stepSimulation({ x, y, vx, vy }, dt);
+          expect(Number.isFinite(next.x)).toBe(true);
+          expect(Number.isFinite(next.y)).toBe(true);
+          expect(Number.isFinite(next.vx)).toBe(true);
+          expect(Number.isFinite(next.vy)).toBe(true);
+        }
+      )
+    );
+  });
 });
 
 describe("classifyOutcome", () => {
