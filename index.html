@@ -23,12 +23,46 @@
 </head>
 <body>
   <header class="masthead">
-    <h1 class="wordmark">ESCAPE<span class="wordmark-accent">·</span>VELOCITY</h1>
+    <h1 class="wordmark">
+      ESCAPE<span class="wordmark-orbit-wrap"><span class="wordmark-accent">·</span><span class="wordmark-orbit-dot" aria-hidden="true"></span></span>VELOCITY
+    </h1>
     <p class="tagline">drag a satellite off a tiny planet — crash, orbit, or escape</p>
   </header>
   <main class="stage">
-    <canvas id="scene" aria-label="Orbital simulation canvas"></canvas>
-    <p id="hud-readout" class="hud-readout" role="status" aria-live="polite"></p>
+    <div class="stage-canvas-wrap" id="canvas-wrap">
+      <canvas id="scene" aria-label="Orbital simulation canvas"></canvas>
+      <div class="outcome-overlay" id="outcome-overlay" hidden>
+        <div class="outcome-card">
+          <p class="outcome-title" id="outcome-title">CRASH</p>
+          <dl class="outcome-stats" id="outcome-stats"></dl>
+          <button type="button" class="btn btn-primary" id="launch-another">Launch Another</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-panel">
+      <dl class="hud-grid" id="hud-grid">
+        <div class="hud-item"><dt>velocity</dt><dd id="hud-velocity">—</dd></div>
+        <div class="hud-item"><dt>altitude</dt><dd id="hud-altitude">—</dd></div>
+        <div class="hud-item"><dt>apoapsis</dt><dd id="hud-apoapsis">—</dd></div>
+        <div class="hud-item"><dt>periapsis</dt><dd id="hud-periapsis">—</dd></div>
+        <div class="hud-item"><dt>period</dt><dd id="hud-period">—</dd></div>
+        <div class="hud-item"><dt>orbits locked</dt><dd id="hud-orbit-count">0</dd></div>
+      </dl>
+      <p id="hud-status" class="hud-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="controls">
+      <label class="control gravity-control" for="gravity-slider">
+        <span class="control-label">gravity&nbsp;(GM)</span>
+        <input type="range" id="gravity-slider" min="1500" max="7000" step="100" value="4000" />
+        <span class="control-value" id="gravity-value">4000</span>
+      </label>
+      <div class="control-buttons">
+        <button type="button" class="btn btn-icon" id="mute-toggle" aria-label="Mute sound" aria-pressed="false"></button>
+        <button type="button" class="btn" id="reset-button">Reset</button>
+      </div>
+    </div>
   </main>
   <footer class="site-footer">
     <p>real two-body gravity, simulated in your browser · no install, no accounts</p>
