@@ -277,6 +277,14 @@ body {
   text-align: center;
 }
 
+.hud-status[data-outcome="crash"] {
+  color: var(--danger);
+}
+
+.hud-status[data-outcome="escape"] {
+  color: var(--accent-support);
+}
+
 .controls {
   width: min(100%, 900px);
   display: flex;

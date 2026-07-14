@@ -112,6 +112,7 @@ function resetScene() {
   dragPointer = null;
   overlay.hidden = true;
   hudStatus.textContent = "";
+  delete hudStatus.dataset.outcome;
   setPhase("idle");
   render(0);
 }
@@ -172,6 +173,7 @@ function resolveOutcome(kind) {
   outcome = kind;
   setPhase("resolved");
 
+  hudStatus.dataset.outcome = kind;
   if (kind === "crash") {
     if (!reducedMotion) particles = createDebrisBurst(satellite.x, satellite.y);
     triggerShake();
