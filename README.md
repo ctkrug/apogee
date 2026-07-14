@@ -18,3 +18,37 @@ You click-drag from the planet and let go. The satellite either:
 - **crashes** — the trajectory arcs back and it's gone in a burst of debris,
 - **orbits** — it snaps into a stable, glowing loop that keeps going, or
 - **escapes** — pull hard enough and it breaks free past escape velocity and flies off screen.
+
+## Planned features
+
+- Real two-body gravitational simulation, semi-implicit Euler integration
+- Drag-to-launch with mouse and touch support
+- Live HUD: velocity, altitude, apoapsis/periapsis, orbital period
+- Synthesized WebAudio SFX for launch, crash, and orbit-lock — no audio files
+- Adjustable gravity strength / planet mass
+- Fully responsive, zero-install, static site — nothing to build or deploy but HTML/CSS/JS
+
+## Stack
+
+Vanilla JavaScript (ES modules) + Canvas 2D — no framework, no bundler; the app ships as static
+files. [Vitest](https://vitest.dev) covers the physics engine with unit tests.
+
+## Getting started
+
+```bash
+npm install
+npm test   # run the physics engine test suite
+npm run dev  # serve the static site locally
+```
+
+Then open the served URL. The whole app is `index.html` + `src/` + `styles/`, no build step.
+
+## Project docs
+
+- [`docs/VISION.md`](docs/VISION.md) — problem, audience, core idea, what "done" looks like
+- [`docs/BACKLOG.md`](docs/BACKLOG.md) — epic/story breakdown with acceptance criteria
+- [`docs/DESIGN.md`](docs/DESIGN.md) — visual direction, tokens, and the juice plan
+
+## License
+
+MIT — see [LICENSE](LICENSE).
